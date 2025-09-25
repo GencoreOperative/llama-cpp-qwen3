@@ -70,7 +70,6 @@ fi
 
 # ---------- Build llama-cli command ----------
 CMD=(./llama-cli -m "$MODEL_PATH")
-
 CMD+=(
   -sys "$SYSTEM_PROMPT"
   --single-turn
@@ -80,14 +79,11 @@ CMD+=(
   --dry-penalty-last-n -1
   --dry-sequence-breaker "—"
   --dry-sequence-breaker "##"
-  -ngl 99
-  --flash-attn
-  --split-mode row
+  --flash-attn auto
   --temp 0.6
   --top-k 20
   --top-p 0.95
   --min-p 0
-  --ctx-size 0
   --predict 32768
   --no-context-shift
   --no-display-prompt
@@ -96,7 +92,9 @@ CMD+=(
 
 # ---------- Streaming Output Filter ----------
 if $HIDE_THOUGHTS; then
-  "${CMD[@]}" 2>/dev/null | bash /think-filter.sh
+#  "${CMD[@]}" 2>/dev/null | bash /end-of-text-filter.sh | bash /think-filter.sh
+  "${CMD[@]}" 2>/dev/null | python3 /end-of-text-filter.py | python3 /think-filter.py
 else
-  "${CMD[@]}" 2>/dev/null
+#  "${CMD[@]}" 2>/dev/null | bash /end-of-text-filter.sh
+  "${CMD[@]}" 2>/dev/null | python3 /end-of-text-filter.py
 fi

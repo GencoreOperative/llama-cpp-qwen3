@@ -57,9 +57,14 @@ RUN apt-get update && apt-get install -y \
 COPY --from=build-cli /opt/llama.cpp/build/bin /opt/llama.cpp/build/bin
 COPY --from=fetch-model /models/model.gguf /models/model.gguf
 
+RUN apt-get update && apt-get install -y \
+    python3 \
+    && apt-get clean
+
 # Copy entrypoint script and prompt file
-COPY docker/entrypoint.sh /entrypoint.sh
-COPY docker/think-filter.sh /think-filter.sh
+COPY docker/entrypoint.sh /
+COPY docker/think-filter.py /
+COPY docker/end-of-text-filter.py /
 RUN chmod +x /entrypoint.sh
 
 WORKDIR /opt/llama.cpp/build/bin
