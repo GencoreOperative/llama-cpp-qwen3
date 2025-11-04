@@ -38,7 +38,8 @@ RUN apt-get update && apt-get install -y \
 RUN pip install --no-cache-dir huggingface_hub
 
 WORKDIR /models
-RUN huggingface-cli download ${MODEL_NAME} ${MODEL_FILE} --local-dir . \
+
+RUN hf download ${MODEL_NAME} ${MODEL_FILE} --local-dir . \
  && cp ${MODEL_FILE} model.gguf
 
 # ---------------------------
