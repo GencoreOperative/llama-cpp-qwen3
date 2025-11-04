@@ -13,10 +13,14 @@ DOCKERFILE := docker/Dockerfile
 1_7_MODEL_FILE=Qwen3-1.7B-Q8_0.gguf
 1_7_MODEL_VERSION=1.7B
 
+4_0_MODEL_NAME=Qwen/Qwen3-4B-GGUF
+4_0_MODEL_FILE=Qwen3-4B-Q8_0.gguf
+4_0_MODEL_VERSION=4.0B
+
 # Targets
 .PHONY: build run
 
-build: build_0_6 build_1_7
+build: build_0_6 build_1_7 build_4_0
 
 build_0_6:
 	DOCKER_BUILDKIT=1 docker build \
@@ -31,6 +35,13 @@ build_1_7:
 	--build-arg MODEL_NAME="${1_7_MODEL_NAME}" \
 	--build-arg MODEL_FILE="${1_7_MODEL_FILE}" \
 	-t $(IMAGE_NAME):${1_7_MODEL_VERSION}
+
+build_4_0:
+	DOCKER_BUILDKIT=1 docker build \
+	-f $(DOCKERFILE) . \
+	--build-arg MODEL_NAME="${4_0_MODEL_NAME}" \
+	--build-arg MODEL_FILE="${4_0_MODEL_FILE}" \
+	-t $(IMAGE_NAME):${4_0_MODEL_VERSION}
 
 run:
 	docker run --rm -i $(IMAGE_NAME):$(tag)
