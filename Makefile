@@ -49,6 +49,6 @@ run:
 publish:
 	@echo "Pushing to DockerHub"
 	@sh utils/docker-login
-	docker push $(IMAGE_NAME):${4_0_MODEL_VERSION}
-	docker push $(IMAGE_NAME):${1_7_MODEL_VERSION}
 	docker push $(IMAGE_NAME):${0_6_MODEL_VERSION}
+	docker push $(IMAGE_NAME):${1_7_MODEL_VERSION}
+	docker push $(IMAGE_NAME):${4_0_MODEL_VERSION}
